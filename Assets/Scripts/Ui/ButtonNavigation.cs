@@ -5,9 +5,10 @@ using UnityEngine.EventSystems;
 
 public class ButtonNavigation : MonoBehaviour
 {    
-    
+    public static ButtonNavigation Instance { get; private set; }
     public GameObject mainMenu; 
     public GameObject optionsMenu; 
+    public GameObject gameOverScreen;
     [SerializeField]
     [Tooltip("The default button when this menu is open")]
     public GameObject defaultMainMenuButton; 
@@ -15,7 +16,16 @@ public class ButtonNavigation : MonoBehaviour
     [Tooltip("The default button when this menu is open")]
     public GameObject defaultOptionsButton; 
 
+
    
+    private void Awake()
+    {
+        if (Instance == null)
+        
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
     public void OpenOptions()
     {
         mainMenu.SetActive(false);
@@ -36,4 +46,5 @@ public class ButtonNavigation : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null); // Remove current selection
         EventSystem.current.SetSelectedGameObject(defaultMainMenuButton);
     }
+
 }

@@ -343,6 +343,7 @@ MonoBehaviour:
   - {x: 42.3744, y: -28.100113}
   - {x: -1.6336011, y: 0.40668488}
   chaseDistance: 10
+  currentState: 0
 --- !u!114 &4475675876986861843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,6 +359,7 @@ MonoBehaviour:
   maxHealth: 5
   timeInvincible: 0.5
   _healthBar: {fileID: 0}
+  smokeEffectPrefab: {fileID: 7856614851444698060, guid: 3bb54600744cf254e90b17da9dfabd4d, type: 3}
   destroyOnDepletion: 1
   depletionMessage: Object has been destroyed
 --- !u!114 &1136267755732071757

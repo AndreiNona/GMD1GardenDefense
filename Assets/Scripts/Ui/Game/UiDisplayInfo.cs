@@ -34,6 +34,15 @@ public class UiDisplayInfo : MonoBehaviour
     {
         roundText.text = "Round: " + roundNumber;
     }
+    public void UpdateRound(int roundNumber,bool isEnded)
+    {
+        if(isEnded)
+            roundText.text = "Round ended! Next round: " + roundNumber;
+        else
+            roundText.text = "Next round: " + roundNumber;
+            
+        
+    }
     public void UpdateSeeds(int seedCount)
     {
         seedsText.text = "Seeds: " + seedCount;

@@ -20,6 +20,7 @@ public class HealthManager : MonoBehaviour, IDamageable
     [SerializeField] private FloatingHealthBar _healthBar;
 
     [Header("Behaviour on Health Depletion")]
+    [SerializeField] private GameObject smokeEffectPrefab;
     [SerializeField] private bool destroyOnDepletion = true;
     [SerializeField] private string depletionMessage = "Object has been destroyed";
 
@@ -43,11 +44,7 @@ public class HealthManager : MonoBehaviour, IDamageable
         }
 
         if (_currentHealth <= 0)
-        {
-            Debug.Log($"{depletionMessage}: {gameObject.name}");
-            if (destroyOnDepletion)
-                Destroy(gameObject);
-        }
+            Dies();
     }
 
     public void TakeDamage(int amount)
@@ -69,5 +66,20 @@ public class HealthManager : MonoBehaviour, IDamageable
             _healthBar.ShowInvincible(_isInvincible);
         }
         Debug.Log($"{gameObject.name} has {_currentHealth} / {maxHealth}");
+    }
+
+    private void Dies()
+    {
+        Debug.Log($"{depletionMessage}: {gameObject.name}");
+        GameObject smokeEffectInstance = Instantiate(smokeEffectPrefab, transform.position, Quaternion.identity);
+        Destroy(smokeEffectInstance, smokeEffectInstance.GetComponent<ParticleSystem>().main.duration);
+        if (destroyOnDepletion)
+        {
+            if(gameObject.CompareTag("Chaseable"))
+                GameManager.Instance.IncrementTreesLost();
+            else
+                GameManager.Instance.IncrementRobotsHealed();
+            Destroy(gameObject);
+        }
     }
 }

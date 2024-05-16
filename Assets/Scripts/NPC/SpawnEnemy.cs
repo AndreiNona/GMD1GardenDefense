@@ -54,7 +54,7 @@ public class SpawnEnemy : MonoBehaviour
             // Cycle through prefabs
             prefabIndex = (prefabIndex + 1) % prefabsToSpawn.Length;
 
-            // Wait for a certain time before spawning the next enemy, if needed
+            // Wait before spawning the next enemy, if needed
             if (i < numberOfEnemies - 1)
             {
                 yield return new WaitForSeconds(timeToWait);
@@ -101,11 +101,10 @@ public class SpawnEnemy : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Check if the collider belongs to the player
+
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player entered: "+ GameManager.Instance != null && GameManager.Instance.IsRoundActive);
-
+            Debug.Log( GameManager.Instance.IsRoundActive);
             SpawnPartial(partialNumberToSpawn);
         }
     }

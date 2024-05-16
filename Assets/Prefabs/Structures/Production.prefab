@@ -181,6 +181,7 @@ MonoBehaviour:
   maxHealth: 5
   timeInvincible: 1
   _healthBar: {fileID: 0}
+  smokeEffectPrefab: {fileID: 7856614851444698060, guid: 3bb54600744cf254e90b17da9dfabd4d, type: 3}
   destroyOnDepletion: 1
   depletionMessage: The tree has been fell
 --- !u!114 &1341230169879374089

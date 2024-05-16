@@ -114,7 +114,7 @@ public class RubyController : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         if(currentHealth <=0)
             Destroy(gameObject);
-
+        GameManager.Instance.IncrementHitsTaken();
         UiHealth.instance.SetValue(currentHealth / (float)maxHealth);
     }
 
@@ -146,7 +146,7 @@ public class RubyController : MonoBehaviour
 
         Projectile projectile = projectileObject.GetComponent<Projectile>();
         projectile.Launch(lookDirection, 300);
-
+        GameManager.Instance.IncrementCogsFired();
         animator.SetTrigger("Launch");
     }
     private void SpawnObject()

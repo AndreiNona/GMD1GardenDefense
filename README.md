@@ -60,4 +60,9 @@ This is all we have time for. Join us next time when we refine our process and f
 
 # Deve update: Improvements, additions, testing restructuring 
 
-TBA
+As the last major update of the project, we are happy to announce that our project received some much-desired features.
+
+We have added an end game screen, before this stage our project lacked the crips ending it needed. This screen shows a rundown of stats, such as structures placed enemies healed and so on. This feature allows the user to not be trusted back into the main screen without warning. We also added a button for quickly getting back into another game. Consideration for further enhancing the game with persistence have been made as such the tracked variables will be easily saved if such a design choice is made in the future.
+We have also standardized the health and damage system, so that new additions and improvements can be made in the general system and be felt across the entire game. This being said our players continue to use their own health as this allows us to have more control over what we want the player to feel like, without having to implement checks for all the other entities that use the system.
+We have also added lore to the game, rudimentary but needed, as the testing showed a lack of direction from players when first starting the game. In addition, we have also standardized the layout of the game so that it can properly function on a variety of devices. Propper UI element scaling has been added to compliment this change.
+Overall, we would say the game is in a releasable state. With no major game braking bugs in sight, we are confident this version can and will resist more in depth testing done by our player base (we are but a small team of 1, so we can only test so much)

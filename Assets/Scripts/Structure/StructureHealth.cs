@@ -46,6 +46,7 @@ public class StructureHealth : MonoBehaviour
         if (_currentHealth <= 0)
         {
             Debug.Log("Structure: "+gameObject.name + " has been destroyed");
+            GameManager.Instance.IncrementTreesLost();
             Destroy(gameObject);
         }
     }

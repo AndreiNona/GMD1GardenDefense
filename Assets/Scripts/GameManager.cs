@@ -14,13 +14,16 @@ public enum GameState
 }
 public class GameManager : MonoBehaviour
 {
+    
+    //Singleton 
     public static GameManager Instance;
+    
+    //Not used
     [SerializeField] [Tooltip("Main objective")]
     private GameObject treeOfLife;
     
     [SerializeField] [Tooltip("Delay (seconds) between tutorial prompts")]
     private int tutorialDelay=5;
-
 
     
     [SerializeField] [Tooltip("Enemy spawners")]
@@ -34,18 +37,32 @@ public class GameManager : MonoBehaviour
     [SerializeField] [Tooltip("The seeds gained as a base at the end of each round")]
     private int baseSeeds = 0;
 
+    //UI
     private UiDisplayInfo uiDisplayInfo;
     
+    //Round reward
     private int seeds = 10;
     private bool roundActive = false;
     
+    //Time
     public float checkInterval = 5.0f; // Time in seconds between checks
     private float timer;
+    
+    //Statistics
+    private String _looseReason;
+    private int _robotsHealed;
+    private int _treesPlanted;
+    private int _seedsGathered;
+    private int _hitsTaken;
+    private int _cogsFired;
+    private int _structuresLost;
     
     public GameState CurrentState { get; private set; } = GameState.RoundInactive;
     
     
     public bool IsRoundActive { get; private set; }
+    
+    
        private void Awake()
     {
         if (Instance != null)
@@ -72,7 +89,6 @@ public class GameManager : MonoBehaviour
             timer = 0;
         }
     }
-
     private IEnumerator Tutorial()
     {
         while (CurrentState != GameState.GameOver)
@@ -81,6 +97,42 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(tutorialDelay);
         }
     }
+    // ReSharper disable Unity.PerformanceAnalysis
+    private void CheckGame()
+    {
+        
+        int enemiesAlive = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        Debug.Log($"Checking game state... Enemies alive: {enemiesAlive}");
+        if (CurrentState == GameState.RoundActive && enemiesAlive < 2)
+            EndRound();
+        else
+            uiDisplayInfo.UpdateEnemies(enemiesAlive);
+
+        GameObject treeOfLife = GameObject.Find("Tree of Life");
+        GameObject player = GameObject.Find("Ruby_0");
+
+        if ((treeOfLife == null || player == null) && CurrentState != GameState.GameOver)
+        {
+            string missingObjects = "";
+            if (treeOfLife == null)
+            {
+                _looseReason = "'Tree of Life' has been destroyed ";
+                missingObjects += "'Tree of Life' not found! ";
+            }
+            else
+            {
+                missingObjects += "Player 'Ruby_0' not found! ";
+                _looseReason = "You died!";
+            }
+            
+            Debug.Log($"Game Over: {missingObjects.Trim()}");
+            CurrentState = GameState.GameOver;
+            var endGameController = FindObjectOfType<EndGameMenuController>();
+            endGameController.DisplayEndGameStats(_looseReason,_robotsHealed, _treesPlanted, _seedsGathered, _hitsTaken, _cogsFired, _structuresLost);
+            //MainMenu.MainScreen();
+        }
+    }
+
 
     private void StartRound()
     {
@@ -107,65 +159,36 @@ public class GameManager : MonoBehaviour
 
     private void EndRound()
     {
-
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in enemies)
-        {
             Destroy(enemy);
-        }
         
+        //Manually updates enemies 
         int endOfRoundReward = GameObject.FindGameObjectsWithTag("Chaseable").Length;
         
         StructureReward[] structureRewards = FindObjectsOfType<StructureReward>();
         foreach (StructureReward structureReward in structureRewards)
-        {
             if (structureReward.IsRewardable)
-            {
                 endOfRoundReward += structureReward.EndOfRoundReward;
-            }
-        }
 
-        // If there are no StructureReward components or none are rewardable, log this information
         if (structureRewards.Length == 0 || !structureRewards.Any(sr => sr.IsRewardable))
             Debug.Log("No structure rewards available or none are rewardable.");
         
-
-        AddSeeds(endOfRoundReward+ baseSeeds);
         CurrentState = GameState.RoundInactive;
         roundNumber++;
         SpawnCollectables();
+
+        uiDisplayInfo.UpdateEnemies(0);
+        uiDisplayInfo.UpdateRound(roundNumber, true);
+        AddSeeds(endOfRoundReward+ baseSeeds);
+
         Debug.Log($"Round ended. Total score: {seeds}, with additional rewards from structures.");
     }
-
-    private void CheckGame()
-    {
-        int enemiesAlive = GameObject.FindGameObjectsWithTag("Enemy").Length;
-        Debug.Log($"Checking game state... Enemies alive: {enemiesAlive}");
-        if (CurrentState == GameState.RoundActive && enemiesAlive < 2)
-            EndRound();
-        else
-            uiDisplayInfo.UpdateEnemies(enemiesAlive);
-
-        GameObject treeOfLife = GameObject.Find("Tree of Life");
-        GameObject player = GameObject.Find("Ruby_0");
-
-        if (treeOfLife == null || player == null)
-        {
-            string missingObjects = "";
-            if (treeOfLife == null)
-                missingObjects += "'Tree of Life' not found! ";
-            if (player == null)
-                missingObjects += "Player 'Ruby_0' not found! ";
-
-            Debug.Log($"Game Over: {missingObjects.Trim()}");
-            CurrentState = GameState.GameOver;
-            MainMenu.MainScreen();
-        }
-    }
-
+    
     private void AddSeeds(int number)
     {
         seeds = baseSeeds + number;
+        _seedsGathered +=number;
         uiDisplayInfo.UpdateSeeds(seeds);
     }
 
@@ -174,6 +197,7 @@ public class GameManager : MonoBehaviour
         if (seeds >= amount)
         {
             seeds -= amount;
+            IncrementTreesPlanted(); //Change if other ways of spending seeds are added
             uiDisplayInfo.UpdateSeeds(seeds);
             return true;
         }
@@ -195,6 +219,27 @@ public class GameManager : MonoBehaviour
     {
         // Increase by 10% each round
         return 10 * Mathf.Pow(1.1f, roundNumber - 1);
+    }
+    public void IncrementRobotsHealed()
+    {
+        _robotsHealed++;
+        Debug.Log("Robots Healed: " + _robotsHealed);
+    }
+    public void IncrementTreesPlanted()
+    {
+        _treesPlanted++;
+    }
+    public void IncrementHitsTaken()
+    {
+        _hitsTaken++;
+    }
+    public void IncrementCogsFired()
+    {
+        _cogsFired++;
+    }
+    public void IncrementTreesLost()
+    {
+        _structuresLost++;
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
