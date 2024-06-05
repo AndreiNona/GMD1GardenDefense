@@ -4,10 +4,13 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class EndGameMenuController : MonoBehaviour
 {
+
+    [SerializeField] private PlayerInput _playerInput;
     public KeyCode replayKey = KeyCode.C;
     public KeyCode menuKey = KeyCode.Q;
     public GameObject endGameMenu;
@@ -27,6 +30,12 @@ public class EndGameMenuController : MonoBehaviour
     {
         if (endGameMenu.activeSelf)
         {
+            bool buttonX = _playerInput.actions["X"].WasPressedThisFrame();
+            bool buttonY = _playerInput.actions["Y"].WasPressedThisFrame();
+            if (buttonX)
+                MainMenu.MainScreen();
+            if (buttonY)
+                MainMenu.PlayGame(); 
             if (Input.GetKeyDown(menuKey))
                 MainMenu.MainScreen();
             if (Input.GetKeyDown(replayKey))

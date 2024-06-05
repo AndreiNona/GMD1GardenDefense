@@ -66,3 +66,18 @@ We have added an end game screen, before this stage our project lacked the crips
 We have also standardized the health and damage system, so that new additions and improvements can be made in the general system and be felt across the entire game. This being said our players continue to use their own health as this allows us to have more control over what we want the player to feel like, without having to implement checks for all the other entities that use the system.
 We have also added lore to the game, rudimentary but needed, as the testing showed a lack of direction from players when first starting the game. In addition, we have also standardized the layout of the game so that it can properly function on a variety of devices. Propper UI element scaling has been added to compliment this change.
 Overall, we would say the game is in a releasable state. With no major game braking bugs in sight, we are confident this version can and will resist more in depth testing done by our player base (we are but a small team of 1, so we can only test so much)
+
+
+# Conclusion:
+
+Creating this project has been a new challenge for us as this is the first 2D experience we have developed. By far the hardest parts of this project have been the initial design and art style. This being said, with testing being performed from an early stage all through the project development, we were able to narrow down the scope to a manageable size and to evolve the story as best as we could. The game is a tower defense style. There are two main objectives, the player and a defense structure as long as both are alive the rounds continue. Speaking of rounds, the game has been segmented into rounds with pauses in between. This choice allows the player to better understand the current state of the game as well as allowing preparation for the next round. The rounds are rather simple, there is an ever-increasing enemy count the higher a player goes in rounds. This count eventually gets capped off, at this point an unimplemented idea was meant to take hold, progressive enemy scaling, allowing them to take and deal more damage. This, however, is a feature that has been removed as it needs more tuning, scaling enemies is a rather tricky subject as it has to be done in a way where it feels fair. 
+
+On a technical level, the game has been made with expansion in mind. With a unified health and damage system, as well as a built-in patrolling and the following features we are confident of the scalability of this game. While it is true that the game is a bit baren of content as developing the basics took most of the available time. Improving and adding enemies, objectives, different maps will undoubtedly be easier given a good direction to take the game in.
+
+## Tutorials used:
+
+- https://learn.unity.com/project/ruby-s-2d-rpg
+
+## Video presentation:
+
+- https://youtu.be/adwieBsBppE

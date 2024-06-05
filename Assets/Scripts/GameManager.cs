@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
             uiDisplayInfo.UpdateEnemies(enemiesAlive);
 
         GameObject treeOfLife = GameObject.Find("Tree of Life");
-        GameObject player = GameObject.Find("Ruby_0");
+        GameObject player = GameObject.Find("Player_C");
 
         if ((treeOfLife == null || player == null) && CurrentState != GameState.GameOver)
         {

@@ -12,7 +12,7 @@ public class EnemyDamage : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            RubyController controller = other.GetComponent<RubyController >();
+            PlayerController controller = other.GetComponent<PlayerController >();
             Debug.Log("Enemy attacked: "+gameObject.name);
             controller.ChangeHealth(-damage);
         }

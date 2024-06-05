@@ -55,7 +55,7 @@ public class EnemyWander : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        RubyController player = other.gameObject.GetComponent<RubyController>();
+        PlayerController player = other.gameObject.GetComponent<PlayerController>();
 
         if (player != null)
         {

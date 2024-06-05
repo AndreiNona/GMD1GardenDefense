@@ -35,11 +35,11 @@ namespace General
                     { 
                         try
                         {
-                            RubyController player = hitCollider.GetComponent<RubyController>();
+                            PlayerController player = hitCollider.GetComponent<PlayerController>();
                             player.ChangeHealth(-damage);
                             return true; 
                         }catch {
-                            //Debug.Log("No RubyController found");
+                            //Debug.Log("No PlayerController found");
                         }
                     }
                     IDamageable damageable = hitCollider.GetComponent<IDamageable>();
